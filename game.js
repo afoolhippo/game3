@@ -8,9 +8,13 @@ const resultText = document.getElementById("resultText");
 
 const bgm = document.getElementById("bgm");
 
+const startScreen = document.getElementById("startScreen");
+const startBtn = document.getElementById("startBtn");
+
 let score = 0;
 let time = 60;
 let gameOver = false;
+let started = false;
 
 const player = {
   x: 160,
@@ -35,7 +39,8 @@ const itemTypes = [
 ];
 
 function spawnItem() {
-  if (gameOver) return;
+
+  if (!started || gameOver) return;
 
   const type = itemTypes[Math.floor(Math.random() * itemTypes.length)];
 
@@ -50,15 +55,21 @@ function spawnItem() {
 }
 
 function update() {
-  if (gameOver) return;
+
+  if (!started || gameOver) return;
 
   for (let i = items.length - 1; i >= 0; i--) {
+
     const item = items[i];
+
     item.y += item.speed;
 
     if (collision(player, item)) {
+
       score += item.score;
+
       items.splice(i, 1);
+
       continue;
     }
 
@@ -71,28 +82,42 @@ function update() {
 }
 
 function draw() {
+
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   ctx.fillStyle = "#0f380f";
   ctx.fillRect(player.x, player.y, player.w, player.h);
 
   items.forEach(item => {
-    if (item.type === "good") ctx.fillStyle = "#0f380f";
-    if (item.type === "bad") ctx.fillStyle = "#306230";
-    if (item.type === "rare") ctx.fillStyle = "#081820";
+
+    if (item.type === "good") {
+      ctx.fillStyle = "#0f380f";
+    }
+
+    if (item.type === "bad") {
+      ctx.fillStyle = "#306230";
+    }
+
+    if (item.type === "rare") {
+      ctx.fillStyle = "#081820";
+    }
 
     ctx.font = "32px monospace";
+
     ctx.fillText(item.symbol, item.x + 4, item.y + 32);
   });
 }
 
 function loop() {
+
   update();
   draw();
+
   requestAnimationFrame(loop);
 }
 
 function collision(a, b) {
+
   return (
     a.x < b.x + b.w &&
     a.x + a.w > b.x &&
@@ -102,20 +127,36 @@ function collision(a, b) {
 }
 
 document.addEventListener("keydown", e => {
-  if (e.key === "ArrowLeft") player.x -= player.speed;
-  if (e.key === "ArrowRight") player.x += player.speed;
+
+  if (e.key === "ArrowLeft") {
+    player.x -= player.speed;
+  }
+
+  if (e.key === "ArrowRight") {
+    player.x += player.speed;
+  }
+
   limitPlayer();
 });
 
 canvas.addEventListener("touchmove", e => {
+
   e.preventDefault();
+
   const rect = canvas.getBoundingClientRect();
+
   player.x = e.touches[0].clientX - rect.left - player.w / 2;
+
   limitPlayer();
+
 }, { passive: false });
 
 function limitPlayer() {
-  if (player.x < 0) player.x = 0;
+
+  if (player.x < 0) {
+    player.x = 0;
+  }
+
   if (player.x > canvas.width - player.w) {
     player.x = canvas.width - player.w;
   }
@@ -124,32 +165,37 @@ function limitPlayer() {
 setInterval(spawnItem, 700);
 
 setInterval(() => {
-  if (gameOver) return;
+
+  if (!started || gameOver) return;
 
   time--;
+
   timeEl.textContent = time;
 
   if (time <= 0) {
     endGame();
   }
+
 }, 1000);
 
 function endGame() {
+
   gameOver = true;
 
-  if (bgm) {
-    bgm.pause();
-  }
+  bgm.pause();
 
   resultEl.classList.remove("hidden");
 
   if (score < 100) {
     resultText.textContent = "味が薄い…";
-  } else if (score < 250) {
+  }
+  else if (score < 250) {
     resultText.textContent = "実家の味";
-  } else if (score < 400) {
+  }
+  else if (score < 400) {
     resultText.textContent = "うまか〜！";
-  } else {
+  }
+  else {
     resultText.textContent = "がめ煮SOUL MAX";
   }
 }
@@ -158,10 +204,17 @@ function restartGame() {
   location.reload();
 }
 
-document.addEventListener("click", () => {
-  if (bgm) {
-    bgm.play().catch(() => {});
-  }
-}, { once: true });
+startBtn.addEventListener("click", () => {
+
+  started = true;
+
+  startScreen.style.display = "none";
+
+  bgm.currentTime = 0;
+
+  bgm.play().catch(err => {
+    console.log(err);
+  });
+});
 
 loop();

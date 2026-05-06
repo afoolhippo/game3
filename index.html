@@ -8,28 +8,31 @@
 </head>
 <body>
 
-  <div id="game-container">
+<div id="game-container">
 
-    <div id="hud">
-      <div>SCORE: <span id="score">0</span></div>
-      <div>TIME: <span id="time">60</span></div>
-    </div>
-
-    <canvas id="gameCanvas" width="360" height="640"></canvas>
-
-    <div id="result" class="hidden">
-      <h1>がめ煮完成！</h1>
-      <p id="resultText"></p>
-      <button onclick="restartGame()">もう一回</button>
-    </div>
-
+  <div id="hud">
+    <div>SCORE: <span id="score">0</span></div>
+    <div>TIME: <span id="time">60</span></div>
   </div>
 
-  <audio id="bgm" src="gameni_soul.mp3"></audio>
-  <audio id="goodSe" src="good.wav"></audio>
-  <audio id="badSe" src="bad.wav"></audio>
-  <audio id="rareSe" src="rare.wav"></audio>
+  <canvas id="gameCanvas" width="360" height="640"></canvas>
 
-  <script src="game.js"></script>
+  <div id="result" class="hidden">
+    <h1>がめ煮完成！</h1>
+    <p id="resultText"></p>
+    <button onclick="restartGame()">もう一回</button>
+  </div>
+
+  <div id="startScreen">
+    <h1>がめ煮SOUL</h1>
+    <p>クリック / タップでスタート</p>
+    <button id="startBtn">START</button>
+  </div>
+
+</div>
+
+<audio id="bgm" src="gameni_soul.mp3"></audio>
+
+<script src="game.js"></script>
 </body>
 </html>
