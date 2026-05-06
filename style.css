@@ -1,7 +1,8 @@
 body {
   margin: 0;
-  background: #9bbc0f;
-  font-family: monospace;
+  background:
+    radial-gradient(circle at top, #f3c178 0%, #b86b2b 45%, #4b2a16 100%);
+  font-family: "Arial Black", "Hiragino Kaku Gothic ProN", "Yu Gothic", monospace;
   overflow: hidden;
   touch-action: none;
 }
@@ -15,54 +16,105 @@ body {
   position: relative;
 }
 
+/* ゲーム画面 */
 canvas {
-  background: #8bac0f;
-  border: 6px solid #0f380f;
+  background:
+    linear-gradient(#f6d28b, #c07a35);
+  border: 6px solid #2a160b;
+  box-shadow:
+    0 0 0 6px #f7e3a1,
+    0 12px 0 #2a160b;
   image-rendering: pixelated;
 }
 
+/* HUD */
 #hud {
   position: absolute;
-  top: 10px;
+  top: 14px;
   width: 360px;
   display: flex;
   justify-content: space-between;
-  color: #0f380f;
-  font-size: 22px;
+  color: #2a160b;
+  font-size: 18px;
+  letter-spacing: 1px;
   z-index: 10;
+  text-shadow: 2px 2px 0 #f7e3a1;
 }
 
-#result {
-  position: absolute;
-  background: #e0f8d0;
-  border: 4px solid #0f380f;
-  color: #0f380f;
-  padding: 20px;
-  text-align: center;
-  width: 280px;
-  z-index: 30;
-}
-
+/* スタート画面 */
 #startScreen {
   position: absolute;
   z-index: 20;
   width: 300px;
-  background: #e0f8d0;
-  border: 4px solid #0f380f;
-  color: #0f380f;
+  background: #f7e3a1;
+  border: 5px solid #2a160b;
+  color: #2a160b;
   text-align: center;
-  padding: 24px;
+  padding: 26px 20px;
+  box-shadow: 8px 8px 0 #2a160b;
+}
+
+#startScreen h1 {
+  margin: 0;
+  font-size: 42px;
+  line-height: 1;
+  letter-spacing: 2px;
+}
+
+#startScreen::after {
+  content: "GAMENI CATCH GAME";
+  display: block;
+  margin-top: 10px;
+  font-size: 12px;
+  letter-spacing: 2px;
+}
+
+#startScreen p {
+  margin: 22px 0 10px;
+  font-size: 14px;
+}
+
+/* リザルト */
+#result {
+  position: absolute;
+  background: #f7e3a1;
+  border: 5px solid #2a160b;
+  color: #2a160b;
+  padding: 24px 20px;
+  text-align: center;
+  width: 280px;
+  z-index: 30;
+  box-shadow: 8px 8px 0 #2a160b;
+}
+
+#result h1 {
+  margin: 0 0 12px;
+  font-size: 28px;
+}
+
+#resultText {
+  font-size: 20px;
+  font-weight: bold;
 }
 
 .hidden {
   display: none;
 }
 
+/* ボタン */
 button {
-  margin-top: 10px;
-  padding: 10px 20px;
-  border: none;
-  background: #306230;
-  color: white;
+  margin-top: 16px;
+  padding: 12px 24px;
+  border: 4px solid #2a160b;
+  background: #b94b22;
+  color: #fff3c4;
   font-size: 16px;
+  font-weight: bold;
+  box-shadow: 4px 4px 0 #2a160b;
+  cursor: pointer;
+}
+
+button:active {
+  transform: translate(4px, 4px);
+  box-shadow: none;
 }
