@@ -1,15 +1,19 @@
+/* game.js */
+
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
 const scoreEl = document.getElementById("score");
 const timeEl = document.getElementById("time");
-const resultEl = document.getElementById("result");
-const resultText = document.getElementById("resultText");
 
 const titleScreen = document.getElementById("titleScreen");
 const gameScreen = document.getElementById("gameScreen");
+const resultScreen = document.getElementById("resultScreen");
+
 const titleImage = document.getElementById("titleImage");
 const pressStart = document.getElementById("pressStart");
+
+const resultText = document.getElementById("resultText");
 
 const bgm = document.getElementById("bgm");
 
@@ -44,15 +48,16 @@ const images = {
 let started = false;
 let gameOver = false;
 let score = 0;
+
 let chorusPlayed1 = false;
 let chorusPlayed2 = false;
 
 const player = {
-  x: 148,
-  y: 540,
-  w: 64,
-  h: 64,
-  speed: 7
+  x: 180,
+  y: 660,
+  w: 72,
+  h: 72,
+  speed: 8
 };
 
 const items = [];
@@ -74,23 +79,30 @@ const itemTypes = [
   { id: "gobou", score: 10, type: "good", weight: 20 },
   { id: "toriniku", score: 10, type: "good", weight: 16 },
   { id: "ingen", score: 10, type: "good", weight: 12 },
+
   { id: "cd", score: -30, type: "bad", weight: 8 },
   { id: "vhs", score: -50, type: "bad", weight: 5 },
+
   { id: "goldshitake", score: 250, type: "rare", weight: 0.3 }
 ];
 
 function playSE(se) {
   if (!se) return;
+
   se.currentTime = 0;
   se.play().catch(() => {});
 }
 
 function weightedRandom() {
-  const total = itemTypes.reduce((sum, item) => sum + item.weight, 0);
+
+  const total =
+    itemTypes.reduce((sum, item) => sum + item.weight, 0);
+
   let rand = Math.random() * total;
 
   for (const item of itemTypes) {
     rand -= item.weight;
+
     if (rand <= 0) return item;
   }
 
@@ -98,45 +110,59 @@ function weightedRandom() {
 }
 
 function isChorus() {
+
   const t = bgm.currentTime;
-  return (t >= 37 && t <= 53) || (t >= 72 && t <= 88);
+
+  return (
+    (t >= 37 && t <= 53) ||
+    (t >= 72 && t <= 88)
+  );
 }
 
 function spawnItem() {
+
   if (!started || gameOver) return;
 
-  const amount = isChorus() ? 3 + Math.floor(Math.random() * 3) : 1;
+  const amount =
+    isChorus()
+      ? 3 + Math.floor(Math.random() * 3)
+      : 1;
 
   for (let i = 0; i < amount; i++) {
+
     const type = weightedRandom();
 
     let speed = 2 + Math.random() * 2;
+
     let vx = 0;
-    let w = 48;
-    let h = 48;
+
+    let w = 52;
+    let h = 52;
 
     if (type.id === "cd") {
-      speed = 5 + Math.random() * 2;
-      vx = (Math.random() - 0.5) * 4;
+      speed = 6 + Math.random() * 2;
+      vx = (Math.random() - 0.5) * 5;
     }
 
     if (type.id === "vhs") {
       speed = 2.2;
-      vx = (Math.random() - 0.5) * 1.2;
-      w = 72;
-      h = 48;
+      vx = (Math.random() - 0.5) * 1.5;
+
+      w = 84;
+      h = 54;
     }
 
     if (type.id === "goldshitake") {
       speed = 1.8;
-      vx = (Math.random() - 0.5) * 1.5;
-      w = 52;
-      h = 52;
+      vx = (Math.random() - 0.5) * 2;
+
+      w = 58;
+      h = 58;
     }
 
     items.push({
       x: Math.random() * (canvas.width - w),
-      y: -70,
+      y: -80,
       w,
       h,
       speed,
@@ -147,6 +173,7 @@ function spawnItem() {
 }
 
 function collision(a, b) {
+
   return (
     a.x < b.x + b.w &&
     a.x + a.w > b.x &&
@@ -156,6 +183,7 @@ function collision(a, b) {
 }
 
 function update() {
+
   if (!started || gameOver) return;
 
   if (!chorusPlayed1 && bgm.currentTime >= 37) {
@@ -169,55 +197,93 @@ function update() {
   }
 
   for (let i = items.length - 1; i >= 0; i--) {
+
     const item = items[i];
 
     item.y += item.speed;
     item.x += item.vx;
 
-    if (item.x < 0 || item.x > canvas.width - item.w) {
+    if (
+      item.x < 0 ||
+      item.x > canvas.width - item.w
+    ) {
       item.vx *= -1;
     }
 
     if (collision(player, item)) {
+
       score += item.score;
+
       counts[item.id]++;
 
       if (item.type === "good") playSE(seGood);
-      if (item.id === "goldshitake") playSE(seGold);
-      if (item.id === "cd") playSE(seCD);
-      if (item.id === "vhs") playSE(seVHS);
+
+      if (item.id === "goldshitake") {
+        playSE(seGold);
+      }
+
+      if (item.id === "cd") {
+        playSE(seCD);
+      }
+
+      if (item.id === "vhs") {
+        playSE(seVHS);
+      }
 
       items.splice(i, 1);
+
       continue;
     }
 
-    if (item.y > canvas.height + 90) {
+    if (item.y > canvas.height + 100) {
       items.splice(i, 1);
     }
   }
 
   scoreEl.textContent = score;
 
-  const remaining = Math.max(0, Math.ceil(GAME_TIME - bgm.currentTime));
-  timeEl.textContent = remaining;
+  const remain =
+    Math.max(0,
+      Math.ceil(GAME_TIME - bgm.currentTime)
+    );
 
-  if (bgm.ended || bgm.currentTime >= GAME_TIME) {
+  timeEl.textContent = remain;
+
+  if (bgm.ended) {
     endGame();
   }
 }
 
 function draw() {
+
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   items.forEach(item => {
+
     const img = images[item.id];
-    if (img) ctx.drawImage(img, item.x, item.y, item.w, item.h);
+
+    if (img) {
+      ctx.drawImage(
+        img,
+        item.x,
+        item.y,
+        item.w,
+        item.h
+      );
+    }
   });
 
-  ctx.drawImage(images.nabe, player.x, player.y, player.w, player.h);
+  ctx.drawImage(
+    images.nabe,
+    player.x,
+    player.y,
+    player.w,
+    player.h
+  );
 }
 
 function loop() {
+
   update();
   draw();
 
@@ -227,39 +293,69 @@ function loop() {
 }
 
 function makeBar(value) {
-  const v = Math.max(0, Math.min(10, Math.round(value)));
-  return "█".repeat(v) + "░".repeat(10 - v);
+
+  const v =
+    Math.max(0,
+      Math.min(10, Math.round(value)));
+
+  return (
+    "█".repeat(v) +
+    "░".repeat(10 - v)
+  );
 }
 
 function endGame() {
-  if (gameOver) return;
 
   gameOver = true;
+
   bgm.pause();
+
   playSE(seResult);
 
-  resultEl.classList.remove("hidden");
+  gameScreen.classList.add("hidden");
 
-  const umami = Math.min(10, counts.toriniku * 0.45 + counts.goldshitake * 3);
-  const yasai = Math.min(
-    10,
-    counts.ninjin * 0.15 +
-    counts.renkon * 0.25 +
-    counts.gobou * 0.35 +
-    counts.ingen * 0.12
-  );
-  const soul = Math.min(10, score / 120 + counts.gobou * 0.12 + counts.ingen * 0.15 + counts.goldshitake * 2);
-  const noise = Math.min(10, counts.cd * 1.2 + counts.vhs * 2);
+  resultScreen.classList.remove("hidden");
+
+  const umami =
+    Math.min(10,
+      counts.toriniku * 0.45 +
+      counts.goldshitake * 3
+    );
+
+  const yasai =
+    Math.min(10,
+      counts.ninjin * 0.15 +
+      counts.renkon * 0.25 +
+      counts.gobou * 0.35 +
+      counts.ingen * 0.12
+    );
+
+  const soul =
+    Math.min(10,
+      score / 120 +
+      counts.gobou * 0.12 +
+      counts.ingen * 0.15 +
+      counts.goldshitake * 2
+    );
+
+  const noise =
+    Math.min(10,
+      counts.cd * 1.2 +
+      counts.vhs * 2
+    );
 
   let title = "";
 
   if (score < 200) {
     title = "味が薄い…";
-  } else if (score < 450) {
+  }
+  else if (score < 450) {
     title = "実家の味";
-  } else if (score < 700) {
+  }
+  else if (score < 700) {
     title = "うまか〜！";
-  } else {
+  }
+  else {
     title = "がめ煮SOUL MAX";
   }
 
@@ -284,14 +380,11 @@ function endGame() {
   `;
 }
 
-function restartGame() {
-  location.reload();
-}
-
-const restartBtn = document.getElementById("restartBtn");
-if (restartBtn) {
-  restartBtn.addEventListener("pointerdown", restartGame);
-}
+document
+  .getElementById("restartBtn")
+  .addEventListener("pointerdown", () => {
+    location.reload();
+  });
 
 const keys = {};
 
@@ -304,25 +397,48 @@ document.addEventListener("keyup", e => {
 });
 
 canvas.addEventListener("touchmove", e => {
+
   if (!started || gameOver) return;
 
   e.preventDefault();
 
-  const rect = canvas.getBoundingClientRect();
-  const scaleX = canvas.width / rect.width;
+  const rect =
+    canvas.getBoundingClientRect();
 
-  player.x = (e.touches[0].clientX - rect.left) * scaleX - player.w / 2;
+  const scaleX =
+    canvas.width / rect.width;
+
+  player.x =
+    (e.touches[0].clientX - rect.left)
+    * scaleX
+    - player.w / 2;
+
   limitPlayer();
+
 }, { passive: false });
 
 function limitPlayer() {
-  player.x = Math.max(0, Math.min(canvas.width - player.w, player.x));
+
+  player.x =
+    Math.max(0,
+      Math.min(
+        canvas.width - player.w,
+        player.x
+      ));
 }
 
 function movePlayer() {
+
   if (started && !gameOver) {
-    if (keys.ArrowLeft) player.x -= player.speed;
-    if (keys.ArrowRight) player.x += player.speed;
+
+    if (keys.ArrowLeft) {
+      player.x -= player.speed;
+    }
+
+    if (keys.ArrowRight) {
+      player.x += player.speed;
+    }
+
     limitPlayer();
   }
 
@@ -330,29 +446,34 @@ function movePlayer() {
 }
 
 function startGame() {
+
   if (started) return;
 
   started = true;
-  gameOver = false;
 
   titleScreen.classList.add("hidden");
+
   gameScreen.classList.remove("hidden");
 
   playSE(seStart);
 
   bgm.currentTime = 0;
+
   bgm.play().catch(() => {});
 
   loop();
 }
 
-if (titleImage) {
-  titleImage.addEventListener("pointerdown", startGame);
-}
+titleImage.addEventListener(
+  "pointerdown",
+  startGame
+);
 
-if (pressStart) {
-  pressStart.addEventListener("pointerdown", startGame);
-}
+pressStart.addEventListener(
+  "pointerdown",
+  startGame
+);
 
 setInterval(spawnItem, 650);
+
 movePlayer();
