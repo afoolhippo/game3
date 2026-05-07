@@ -2,36 +2,43 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>がめ煮SOUL</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div id="game-container">
+<div id="titleScreen">
+  <img src="title.png" id="titleImage" alt="がめ煮SOUL">
+  <div id="pressStart">PRESS START</div>
+</div>
+
+<div id="gameScreen" class="hidden">
 
   <div id="hud">
-    <div>SCORE: <span id="score">0</span></div>
-    <div>TIME: <span id="time">60</span></div>
+    <div>SCORE <span id="score">0</span></div>
+    <div>TIME <span id="time">107</span></div>
   </div>
 
   <canvas id="gameCanvas" width="360" height="640"></canvas>
 
   <div id="result" class="hidden">
     <h1>がめ煮完成！</h1>
-    <p id="resultText"></p>
-    <button onclick="restartGame()">もう一回</button>
-  </div>
-
-  <div id="startScreen">
-    <h1>がめ煮SOUL</h1>
-    <p>クリック / タップでスタート</p>
-    <button id="startBtn">START</button>
+    <div id="resultText"></div>
+    <button id="restartBtn">もう一回</button>
   </div>
 
 </div>
 
 <audio id="bgm" src="gameni_soul.mp3"></audio>
+
+<audio id="seGood" src="get_good.mp3"></audio>
+<audio id="seGold" src="get_gold.mp3"></audio>
+<audio id="seCD" src="hit_cd.mp3"></audio>
+<audio id="seVHS" src="hit_vhs.mp3"></audio>
+<audio id="seStart" src="start.mp3"></audio>
+<audio id="seResult" src="result.mp3"></audio>
+<audio id="seChorus" src="chorus_start.mp3"></audio>
 
 <script src="game.js"></script>
 </body>
