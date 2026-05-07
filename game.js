@@ -50,24 +50,4 @@ let chorusPlayed2 = false;
 const player = {
   x: 150,
   y: 540,
-  w: 64,
-  h: 64,
-  speed: 7
-};
-
-const items = [];
-
-const counts = {
-  ninjin: 0,
-  renkon: 0,
-  gobou: 0,
-  toriniku: 0,
-  ingen: 0,
-  cd: 0,
-  vhs: 0,
-  goldshitake: 0
-};
-
-const itemTypes = [
-  {
-titleImage.onclick = startGame;
+document.getElementById("pressStart").addEventListener("pointerdown", startGame);

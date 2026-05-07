@@ -17,8 +17,10 @@ body {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
+  padding-top: 24px;
+  box-sizing: border-box;
   background:
     radial-gradient(circle at top, #fff8eb 0%, #dbc7a2 55%, #8f5c32 100%);
 }
@@ -57,7 +59,4 @@ canvas {
   background:
     linear-gradient(#f4d397, #bf7a35);
   image-rendering: pixelated;
-  border: 6px solid #2a160b;
-  box-shadow:
-    0 0 0 6px #f8e3b4,
 }
