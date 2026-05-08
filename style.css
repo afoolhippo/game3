@@ -1,10 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=DotGothic16&display=swap');
 
+:root {
+  --app-height: 100dvh;
+}
+
 html,
 body {
   margin: 0;
   padding: 0;
   overflow: hidden;
+
+  width: 100%;
+  height: var(--app-height);
 
   background: #e7dcc3;
 
@@ -13,13 +20,19 @@ body {
   touch-action: manipulation;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 .hidden {
   display: none !important;
 }
 
 .screen {
   width: 100vw;
-  height: 100vh;
+  height: var(--app-height);
+
+  overflow: hidden;
 }
 
 /* =========================
@@ -33,7 +46,8 @@ body {
   align-items: center;
   justify-content: flex-start;
 
-  padding-top: 24px;
+  padding-top: 18px;
+
   box-sizing: border-box;
 
   background:
@@ -57,8 +71,7 @@ body {
 ========================= */
 
 #pressStart {
-
-  margin-top: 18px;
+  margin-top: 14px;
 
   font-family: "DotGothic16", monospace;
 
@@ -82,8 +95,7 @@ body {
 ========================= */
 
 #guideText {
-
-  margin-top: 34px;
+  margin-top: 26px;
 
   text-align: center;
 
@@ -93,9 +105,11 @@ body {
 
   font-size: 17px;
 
-  line-height: 1.9;
+  line-height: 1.8;
 
   letter-spacing: 1px;
+
+  padding: 0 12px;
 }
 
 /* =========================
@@ -103,12 +117,13 @@ body {
 ========================= */
 
 #gameScreen {
-
   display: flex;
 
   flex-direction: column;
 
   align-items: center;
+
+  overflow: hidden;
 
   background:
     radial-gradient(circle at top,
@@ -122,14 +137,13 @@ body {
 ========================= */
 
 #hud {
-
   width: min(430px, 100vw);
 
   display: flex;
 
   justify-content: space-between;
 
-  padding: 12px 18px 8px;
+  padding: 10px 18px 6px;
 
   box-sizing: border-box;
 
@@ -142,6 +156,8 @@ body {
   font-weight: bold;
 
   text-shadow: 2px 2px #f7deb0;
+
+  flex-shrink: 0;
 }
 
 /* =========================
@@ -149,10 +165,14 @@ body {
 ========================= */
 
 canvas {
+  width: auto;
 
-  width: min(430px, 100vw);
+  height: min(
+    calc(var(--app-height) - 56px),
+    760px
+  );
 
-  height: auto;
+  max-width: 100vw;
 
   background:
     linear-gradient(#f4d397, #bf7a35);
@@ -162,6 +182,8 @@ canvas {
   border-top: 5px solid #2a160b;
 
   border-bottom: 5px solid #2a160b;
+
+  flex-shrink: 1;
 }
 
 /* =========================
@@ -169,7 +191,6 @@ canvas {
 ========================= */
 
 #resultScreen {
-
   overflow-y: auto;
 
   background:
@@ -182,18 +203,16 @@ canvas {
 }
 
 #resultInner {
-
   width: min(420px, 92vw);
 
   margin: 0 auto;
 
-  padding: 18px 0 40px;
+  padding: 16px 0 34px;
 
   text-align: center;
 }
 
 #resultInner h1 {
-
   margin: 0 0 10px;
 
   font-family: "DotGothic16", monospace;
@@ -204,7 +223,6 @@ canvas {
 }
 
 #resultText {
-
   font-family: "DotGothic16", monospace;
 
   font-size: 16px;
@@ -219,7 +237,6 @@ canvas {
 ========================= */
 
 button {
-
   margin-top: 18px;
 
   padding: 12px 26px;
@@ -238,8 +255,94 @@ button {
 }
 
 button:active {
-
   transform: translate(4px, 4px);
 
   box-shadow: none;
+}
+
+/* =========================
+   少し高さが低い端末
+========================= */
+
+@media (max-height: 760px) {
+
+  #titleScreen {
+    padding-top: 10px;
+  }
+
+  #titleImage {
+    width: min(390px, 90vw);
+  }
+
+  #pressStart {
+    margin-top: 10px;
+    font-size: 24px;
+  }
+
+  #guideText {
+    margin-top: 18px;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  #hud {
+    font-size: 18px;
+    padding: 8px 14px 4px;
+  }
+
+  #resultInner h1 {
+    font-size: 28px;
+  }
+
+  #resultText {
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  button {
+    font-size: 18px;
+    padding: 10px 20px;
+  }
+}
+
+/* =========================
+   かなり低い端末
+========================= */
+
+@media (max-height: 680px) {
+
+  #titleImage {
+    width: min(340px, 86vw);
+  }
+
+  #pressStart {
+    font-size: 20px;
+  }
+
+  #guideText {
+    margin-top: 14px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  #hud {
+    font-size: 16px;
+  }
+
+  #resultInner {
+    padding-top: 10px;
+  }
+
+  #resultInner h1 {
+    font-size: 24px;
+  }
+
+  #resultText {
+    font-size: 13px;
+  }
+
+  button {
+    font-size: 16px;
+    padding: 8px 18px;
+  }
 }
