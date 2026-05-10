@@ -570,10 +570,11 @@ https://afoolhippo.github.io/game3/
 
 #がめ煮ソウル #カバゲーセン`;
 
-  const url =
-    `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+  const shareUrl =
+    "https://x.com/intent/tweet?text=" +
+    encodeURIComponent(text);
 
-  window.open(url, "_blank");
+  window.location.href = shareUrl;
 }
 
 titleImage
