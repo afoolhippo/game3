@@ -5,50 +5,75 @@
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>がめ煮ソウル</title>
+
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- タイトル -->
+<!-- TITLE -->
+
 <div id="titleScreen" class="screen">
 
-  <img src="title.png" id="titleImage" alt="がめ煮ソウル">
-
-  <button id="startButton">
-    タップしてスタート
-  </button>
+  <img src="title.png"
+       id="titleImage"
+       alt="がめ煮ソウル">
 
   <div id="guideText">
     鍋を左右に動かして具材をゲットせよ！<br>
     CDとVHSには注意！
   </div>
 
+  <button id="startButton">
+    タップしてスタート
+  </button>
+
 </div>
 
-<!-- ゲーム -->
-<div id="gameScreen" class="screen hidden">
+<!-- GAME -->
+
+<div id="gameScreen"
+     class="screen hidden">
 
   <div id="topBar">
+
     <button id="titleBackButton">
       タイトルへ戻る
     </button>
+
   </div>
 
   <div id="hud">
-    <div>SCORE <span id="score">0</span></div>
-    <div>TIME <span id="time">107</span></div>
+
+    <div>
+      SCORE
+      <span id="score">0</span>
+    </div>
+
+    <div>
+      TIME
+      <span id="time">107</span>
+    </div>
+
   </div>
 
-  <canvas id="gameCanvas" width="430" height="760"></canvas>
+  <canvas id="gameCanvas"
+          width="430"
+          height="760"></canvas>
 
 </div>
 
 <!-- RESULT -->
-<div id="resultScreen" class="screen hidden">
+
+<div id="resultScreen"
+     class="screen hidden">
 
   <div id="resultInner">
 
     <h1>がめ煮完成！</h1>
+
+    <div id="rankTitle">
+      実家の味🍲
+    </div>
 
     <div id="resultText"></div>
 
@@ -68,15 +93,29 @@
 
 </div>
 
-<audio id="bgm" src="gameni_soul.mp3"></audio>
+<audio id="bgm"
+       src="gameni_soul.mp3"></audio>
 
-<audio id="seGood" src="get_good.mp3"></audio>
-<audio id="seGold" src="get_gold.mp3"></audio>
-<audio id="seCD" src="hit_cd.mp3"></audio>
-<audio id="seVHS" src="hit_vhs.mp3"></audio>
-<audio id="seStart" src="start.mp3"></audio>
-<audio id="seResult" src="result.mp3"></audio>
-<audio id="seChorus" src="chorus_start.mp3"></audio>
+<audio id="seGood"
+       src="get_good.mp3"></audio>
+
+<audio id="seGold"
+       src="get_gold.mp3"></audio>
+
+<audio id="seCD"
+       src="hit_cd.mp3"></audio>
+
+<audio id="seVHS"
+       src="hit_vhs.mp3"></audio>
+
+<audio id="seStart"
+       src="start.mp3"></audio>
+
+<audio id="seResult"
+       src="result.mp3"></audio>
+
+<audio id="seChorus"
+       src="chorus_start.mp3"></audio>
 
 <script src="game.js"></script>
 

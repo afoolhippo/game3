@@ -13,51 +13,83 @@ function setAppHeight() {
 setAppHeight();
 
 window.addEventListener("resize", setAppHeight);
-window.addEventListener("orientationchange", setAppHeight);
 
 if (window.visualViewport) {
 
   window.visualViewport
     .addEventListener("resize", setAppHeight);
-
-  window.visualViewport
-    .addEventListener("scroll", setAppHeight);
 }
 
-const canvas = document.getElementById("gameCanvas");
-const ctx = canvas.getContext("2d");
+const canvas =
+  document.getElementById("gameCanvas");
 
-const scoreEl = document.getElementById("score");
-const timeEl = document.getElementById("time");
+const ctx =
+  canvas.getContext("2d");
 
-const titleScreen = document.getElementById("titleScreen");
-const gameScreen = document.getElementById("gameScreen");
-const resultScreen = document.getElementById("resultScreen");
+const scoreEl =
+  document.getElementById("score");
 
-const titleImage = document.getElementById("titleImage");
-const startButton = document.getElementById("startButton");
+const timeEl =
+  document.getElementById("time");
 
-const resultText = document.getElementById("resultText");
+const titleScreen =
+  document.getElementById("titleScreen");
 
-const bgm = document.getElementById("bgm");
+const gameScreen =
+  document.getElementById("gameScreen");
 
-const seGood = document.getElementById("seGood");
-const seGold = document.getElementById("seGold");
-const seCD = document.getElementById("seCD");
-const seVHS = document.getElementById("seVHS");
-const seStart = document.getElementById("seStart");
-const seResult = document.getElementById("seResult");
-const seChorus = document.getElementById("seChorus");
+const resultScreen =
+  document.getElementById("resultScreen");
+
+const titleImage =
+  document.getElementById("titleImage");
+
+const startButton =
+  document.getElementById("startButton");
+
+const rankTitle =
+  document.getElementById("rankTitle");
+
+const resultText =
+  document.getElementById("resultText");
+
+const bgm =
+  document.getElementById("bgm");
+
+const seGood =
+  document.getElementById("seGood");
+
+const seGold =
+  document.getElementById("seGold");
+
+const seCD =
+  document.getElementById("seCD");
+
+const seVHS =
+  document.getElementById("seVHS");
+
+const seStart =
+  document.getElementById("seStart");
+
+const seResult =
+  document.getElementById("seResult");
+
+const seChorus =
+  document.getElementById("seChorus");
 
 const GAME_TIME = 107;
 
 const load = src => {
+
   const img = new Image();
+
   img.src = src;
+
   return img;
 };
 
 const images = {
+
   ninjin: load("ninjin.png"),
   renkon: load("renkon.png"),
   gobou: load("gobou.png"),
@@ -79,37 +111,89 @@ let chorusPlayed2 = false;
 let currentTitle = "味が薄い…🍲";
 
 const player = {
+
   x: 180,
   y: 660,
+
   w: 72,
   h: 72,
+
   speed: 8
 };
 
 const items = [];
 
 const counts = {
+
   ninjin: 0,
   renkon: 0,
   gobou: 0,
   toriniku: 0,
   ingen: 0,
+
   cd: 0,
   vhs: 0,
+
   goldshitake: 0
 };
 
 const itemTypes = [
-  { id: "ninjin", score: 10, type: "good", weight: 26 },
-  { id: "renkon", score: 10, type: "good", weight: 22 },
-  { id: "gobou", score: 10, type: "good", weight: 20 },
-  { id: "toriniku", score: 10, type: "good", weight: 16 },
-  { id: "ingen", score: 10, type: "good", weight: 12 },
 
-  { id: "cd", score: -30, type: "bad", weight: 8 },
-  { id: "vhs", score: -50, type: "bad", weight: 5 },
+  {
+    id: "ninjin",
+    score: 10,
+    type: "good",
+    weight: 26
+  },
 
-  { id: "goldshitake", score: 250, type: "rare", weight: 0.25 }
+  {
+    id: "renkon",
+    score: 10,
+    type: "good",
+    weight: 22
+  },
+
+  {
+    id: "gobou",
+    score: 10,
+    type: "good",
+    weight: 20
+  },
+
+  {
+    id: "toriniku",
+    score: 10,
+    type: "good",
+    weight: 16
+  },
+
+  {
+    id: "ingen",
+    score: 10,
+    type: "good",
+    weight: 12
+  },
+
+  {
+    id: "cd",
+    score: -30,
+    type: "bad",
+    weight: 8
+  },
+
+  {
+    id: "vhs",
+    score: -50,
+    type: "bad",
+    weight: 5
+  },
+
+  {
+    id: "goldshitake",
+    score: 250,
+    type: "rare",
+    weight: 0.25
+  }
 ];
 
 function playSE(se) {
@@ -124,7 +208,10 @@ function playSE(se) {
 function weightedRandom() {
 
   const total =
-    itemTypes.reduce((sum, item) => sum + item.weight, 0);
+    itemTypes.reduce(
+      (sum, item) => sum + item.weight,
+      0
+    );
 
   let rand = Math.random() * total;
 
@@ -161,7 +248,8 @@ function spawnItem() {
 
     const type = weightedRandom();
 
-    let speed = 2 + Math.random() * 1.8;
+    let speed =
+      2 + Math.random() * 1.8;
 
     let vx = 0;
 
@@ -170,16 +258,19 @@ function spawnItem() {
 
     if (type.id === "cd") {
 
-      speed = 5.5 + Math.random() * 1.8;
+      speed =
+        5.5 + Math.random() * 1.8;
 
-      vx = (Math.random() - 0.5) * 5;
+      vx =
+        (Math.random() - 0.5) * 5;
     }
 
     if (type.id === "vhs") {
 
       speed = 2.1;
 
-      vx = (Math.random() - 0.5) * 1.5;
+      vx =
+        (Math.random() - 0.5) * 1.5;
 
       w = 84;
       h = 54;
@@ -189,19 +280,27 @@ function spawnItem() {
 
       speed = 1.7;
 
-      vx = (Math.random() - 0.5) * 2;
+      vx =
+        (Math.random() - 0.5) * 2;
 
       w = 58;
       h = 58;
     }
 
     items.push({
-      x: Math.random() * (canvas.width - w),
+
+      x:
+        Math.random() *
+        (canvas.width - w),
+
       y: -80,
+
       w,
       h,
+
       speed,
       vx,
+
       ...type
     });
   }
@@ -221,21 +320,31 @@ function update() {
 
   if (!started || gameOver) return;
 
-  if (!chorusPlayed1 && bgm.currentTime >= 37) {
+  if (
+    !chorusPlayed1 &&
+    bgm.currentTime >= 37
+  ) {
 
     chorusPlayed1 = true;
 
     playSE(seChorus);
   }
 
-  if (!chorusPlayed2 && bgm.currentTime >= 72) {
+  if (
+    !chorusPlayed2 &&
+    bgm.currentTime >= 72
+  ) {
 
     chorusPlayed2 = true;
 
     playSE(seChorus);
   }
 
-  for (let i = items.length - 1; i >= 0; i--) {
+  for (
+    let i = items.length - 1;
+    i >= 0;
+    i--
+  ) {
 
     const item = items[i];
 
@@ -255,7 +364,9 @@ function update() {
 
       counts[item.id]++;
 
-      if (item.type === "good") playSE(seGood);
+      if (item.type === "good") {
+        playSE(seGood);
+      }
 
       if (item.id === "goldshitake") {
         playSE(seGold);
@@ -274,7 +385,9 @@ function update() {
       continue;
     }
 
-    if (item.y > canvas.height + 100) {
+    if (
+      item.y > canvas.height + 100
+    ) {
       items.splice(i, 1);
     }
   }
@@ -284,7 +397,9 @@ function update() {
   const remain =
     Math.max(
       0,
-      Math.ceil(GAME_TIME - bgm.currentTime)
+      Math.ceil(
+        GAME_TIME - bgm.currentTime
+      )
     );
 
   timeEl.textContent = remain;
@@ -296,7 +411,12 @@ function update() {
 
 function draw() {
 
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.clearRect(
+    0,
+    0,
+    canvas.width,
+    canvas.height
+  );
 
   items.forEach(item => {
 
@@ -401,11 +521,13 @@ function endGame() {
     currentTitle = "うまか〜！🍲✨";
   }
   else {
-    currentTitle = "がめ煮SOUL MAX🍲🔥✨";
+    currentTitle =
+      "がめ煮SOUL MAX🍲🔥✨";
   }
 
+  rankTitle.textContent = currentTitle;
+
   resultText.innerHTML = `
-    称号：${currentTitle}<br>
     SCORE：${score}<br><br>
 
     うまみ　${makeBar(umami)}<br>
@@ -454,45 +576,73 @@ https://afoolhippo.github.io/game3/
   window.open(url, "_blank");
 }
 
-titleImage.addEventListener("pointerdown", startGame);
+titleImage
+  .addEventListener(
+    "pointerdown",
+    startGame
+  );
 
-startButton.addEventListener("pointerdown", startGame);
-
-document
-  .getElementById("restartBtn")
-  .addEventListener("pointerdown", () => {
-    location.reload();
-  });
-
-document
-  .getElementById("homeButton")
-  .addEventListener("pointerdown", () => {
-    location.href =
-      "https://afoolhippo.github.io/home/?skipTitle=1";
-  });
+startButton
+  .addEventListener(
+    "pointerdown",
+    startGame
+  );
 
 document
   .getElementById("shareButton")
-  .addEventListener("pointerdown", shareScore);
+  .addEventListener(
+    "pointerdown",
+    shareScore
+  );
+
+document
+  .getElementById("restartBtn")
+  .addEventListener(
+    "pointerdown",
+    () => {
+      location.reload();
+    }
+  );
+
+document
+  .getElementById("homeButton")
+  .addEventListener(
+    "pointerdown",
+    () => {
+
+      location.href =
+        "https://afoolhippo.github.io/home/?skipTitle=1";
+    }
+  );
 
 document
   .getElementById("titleBackButton")
-  .addEventListener("pointerdown", () => {
-    location.reload();
-  });
+  .addEventListener(
+    "pointerdown",
+    () => {
+      location.reload();
+    }
+  );
 
 const keys = {};
 
-document.addEventListener("keydown", e => {
-  keys[e.key] = true;
-});
+document.addEventListener(
+  "keydown",
+  e => {
+    keys[e.key] = true;
+  }
+);
 
-document.addEventListener("keyup", e => {
-  keys[e.key] = false;
-});
+document.addEventListener(
+  "keyup",
+  e => {
+    keys[e.key] = false;
+  }
+);
 
 canvas.addEventListener(
   "touchmove",
+
   e => {
 
     if (!started || gameOver) return;
@@ -506,13 +656,16 @@ canvas.addEventListener(
       canvas.width / rect.width;
 
     player.x =
-      (e.touches[0].clientX - rect.left)
-      * scaleX
-      - player.w / 2;
+      (
+        e.touches[0].clientX -
+        rect.left
+      ) *
+      scaleX -
+      player.w / 2;
 
     limitPlayer();
-
   },
+
   { passive: false }
 );
 
