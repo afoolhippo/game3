@@ -568,13 +568,14 @@ SCORE：${score}
 
 https://afoolhippo.github.io/game3/
 
-#がめ煮ソウル #カバゲーセン`;
+#がめ煮ソウル
+#カバゲーセン`;
 
   const shareUrl =
-    "https://x.com/intent/tweet?text=" +
+    "https://twitter.com/intent/tweet?text=" +
     encodeURIComponent(text);
 
-  window.location.href = shareUrl;
+  window.open(shareUrl, "_blank");
 }
 
 titleImage
