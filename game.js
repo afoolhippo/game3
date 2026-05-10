@@ -565,7 +565,6 @@ SCORE：${score}
 
 無料ブラウザゲーム
 「がめ煮ソウル」
-
 https://afoolhippo.github.io/game3/
 
 #がめ煮ソウル
