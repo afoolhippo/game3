@@ -1,11 +1,10 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>がめ煮SOUL</title>
+  <title>がめ煮ソウル</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -13,11 +12,11 @@
 <!-- タイトル -->
 <div id="titleScreen" class="screen">
 
-  <img src="title.png" id="titleImage" alt="がめ煮SOUL">
+  <img src="title.png" id="titleImage" alt="がめ煮ソウル">
 
-  <div id="pressStart">
-    PRESS START
-  </div>
+  <button id="startButton">
+    タップしてスタート
+  </button>
 
   <div id="guideText">
     鍋を左右に動かして具材をゲットせよ！<br>
@@ -28,6 +27,12 @@
 
 <!-- ゲーム -->
 <div id="gameScreen" class="screen hidden">
+
+  <div id="topBar">
+    <button id="titleBackButton">
+      タイトルへ戻る
+    </button>
+  </div>
 
   <div id="hud">
     <div>SCORE <span id="score">0</span></div>
@@ -47,8 +52,16 @@
 
     <div id="resultText"></div>
 
+    <button id="shareButton">
+      Xでシェア
+    </button>
+
     <button id="restartBtn">
-      もう一回
+      もう1回遊ぶ
+    </button>
+
+    <button id="homeButton">
+      カバゲーセンへ
     </button>
 
   </div>

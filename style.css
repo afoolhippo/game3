@@ -40,6 +40,7 @@ body {
 ========================= */
 
 #titleScreen {
+
   display: flex;
   flex-direction: column;
 
@@ -47,8 +48,6 @@ body {
   justify-content: flex-start;
 
   padding-top: 18px;
-
-  box-sizing: border-box;
 
   background:
     radial-gradient(circle at top,
@@ -58,6 +57,7 @@ body {
 }
 
 #titleImage {
+
   width: min(420px, 92vw);
 
   image-rendering: pixelated;
@@ -66,36 +66,22 @@ body {
   -webkit-user-drag: none;
 }
 
-/* =========================
-   PRESS START
-========================= */
+#startButton {
 
-#pressStart {
-  margin-top: 14px;
+  margin-top: 18px;
 
   font-family: "DotGothic16", monospace;
 
-  font-size: 28px;
+  font-size: 22px;
 
-  color: #2e1709;
+  background: #fff4d0;
 
-  letter-spacing: 2px;
-
-  animation: blink 1s steps(1) infinite;
+  color: #2a160b;
 }
-
-@keyframes blink {
-  50% {
-    opacity: 0;
-  }
-}
-
-/* =========================
-   GUIDE
-========================= */
 
 #guideText {
-  margin-top: 26px;
+
+  margin-top: 28px;
 
   text-align: center;
 
@@ -103,11 +89,9 @@ body {
 
   color: #2e1709;
 
-  font-size: 17px;
+  font-size: 16px;
 
   line-height: 1.8;
-
-  letter-spacing: 1px;
 
   padding: 0 12px;
 }
@@ -117,13 +101,12 @@ body {
 ========================= */
 
 #gameScreen {
+
   display: flex;
 
   flex-direction: column;
 
   align-items: center;
-
-  overflow: hidden;
 
   background:
     radial-gradient(circle at top,
@@ -132,24 +115,41 @@ body {
       #8f5c32 100%);
 }
 
-/* =========================
-   HUD
-========================= */
+#topBar {
+
+  width: min(430px, 100vw);
+
+  display: flex;
+
+  justify-content: flex-end;
+
+  padding: 8px 12px 0;
+
+  flex-shrink: 0;
+}
+
+#titleBackButton {
+
+  font-size: 12px;
+
+  padding: 6px 10px;
+
+  background: rgba(255,255,255,0.75);
+
+  box-shadow: 2px 2px 0 #2a160b;
+}
 
 #hud {
+
   width: min(430px, 100vw);
 
   display: flex;
 
   justify-content: space-between;
 
-  padding: 10px 18px 6px;
-
-  box-sizing: border-box;
+  padding: 6px 18px 6px;
 
   color: #2a160b;
-
-  font-family: monospace;
 
   font-size: 21px;
 
@@ -160,15 +160,12 @@ body {
   flex-shrink: 0;
 }
 
-/* =========================
-   CANVAS
-========================= */
-
 canvas {
+
   width: auto;
 
   height: min(
-    calc(var(--app-height) - 56px),
+    calc(var(--app-height) - 100px),
     760px
   );
 
@@ -182,8 +179,6 @@ canvas {
   border-top: 5px solid #2a160b;
 
   border-bottom: 5px solid #2a160b;
-
-  flex-shrink: 1;
 }
 
 /* =========================
@@ -191,6 +186,7 @@ canvas {
 ========================= */
 
 #resultScreen {
+
   overflow-y: auto;
 
   background:
@@ -203,43 +199,43 @@ canvas {
 }
 
 #resultInner {
+
   width: min(420px, 92vw);
 
   margin: 0 auto;
 
-  padding: 16px 0 34px;
+  padding: 18px 0 34px;
 
   text-align: center;
 }
 
 #resultInner h1 {
+
   margin: 0 0 10px;
 
   font-family: "DotGothic16", monospace;
 
   font-size: 34px;
-
-  line-height: 1.1;
 }
 
 #resultText {
+
   font-family: "DotGothic16", monospace;
 
   font-size: 16px;
 
   line-height: 1.55;
-
-  letter-spacing: 0.5px;
 }
 
-/* =========================
-   BUTTON
-========================= */
-
 button {
-  margin-top: 18px;
 
-  padding: 12px 26px;
+  display: block;
+
+  width: 100%;
+
+  margin-top: 16px;
+
+  padding: 12px 18px;
 
   border: 4px solid #2a160b;
 
@@ -249,45 +245,26 @@ button {
 
   font-family: "DotGothic16", monospace;
 
-  font-size: 20px;
+  font-size: 18px;
 
   box-shadow: 4px 4px 0 #2a160b;
 }
 
 button:active {
+
   transform: translate(4px, 4px);
 
   box-shadow: none;
 }
 
-/* =========================
-   少し高さが低い端末
-========================= */
-
 @media (max-height: 760px) {
 
-  #titleScreen {
-    padding-top: 10px;
-  }
-
-  #titleImage {
-    width: min(390px, 90vw);
-  }
-
-  #pressStart {
-    margin-top: 10px;
-    font-size: 24px;
-  }
-
   #guideText {
-    margin-top: 18px;
-    font-size: 15px;
-    line-height: 1.7;
+    font-size: 14px;
   }
 
   #hud {
     font-size: 18px;
-    padding: 8px 14px 4px;
   }
 
   #resultInner h1 {
@@ -296,53 +273,9 @@ button:active {
 
   #resultText {
     font-size: 14px;
-    line-height: 1.45;
-  }
-
-  button {
-    font-size: 18px;
-    padding: 10px 20px;
-  }
-}
-
-/* =========================
-   かなり低い端末
-========================= */
-
-@media (max-height: 680px) {
-
-  #titleImage {
-    width: min(340px, 86vw);
-  }
-
-  #pressStart {
-    font-size: 20px;
-  }
-
-  #guideText {
-    margin-top: 14px;
-    font-size: 13px;
-    line-height: 1.6;
-  }
-
-  #hud {
-    font-size: 16px;
-  }
-
-  #resultInner {
-    padding-top: 10px;
-  }
-
-  #resultInner h1 {
-    font-size: 24px;
-  }
-
-  #resultText {
-    font-size: 13px;
   }
 
   button {
     font-size: 16px;
-    padding: 8px 18px;
   }
 }
