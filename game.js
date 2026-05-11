@@ -574,7 +574,7 @@ https://afoolhippo.github.io/game3/
     "https://twitter.com/intent/tweet?text=" +
     encodeURIComponent(text);
 
-  window.open(shareUrl, "_blank");
+  window.location.href = shareUrl;
 }
 
 titleImage
@@ -589,12 +589,22 @@ startButton
     startGame
   );
 
-document
-  .getElementById("shareButton")
-  .addEventListener(
-    "pointerdown",
-    shareScore
-  );
+const shareButton =
+  document.getElementById("shareButton");
+
+shareButton.addEventListener(
+  "click",
+  shareScore
+);
+
+shareButton.addEventListener(
+  "touchend",
+  e => {
+    e.preventDefault();
+    shareScore();
+  },
+  { passive: false }
+);
 
 document
   .getElementById("restartBtn")
