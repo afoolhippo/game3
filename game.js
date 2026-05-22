@@ -503,19 +503,19 @@ function update() {
 
   scoreEl.textContent = score;
 
-  const remain =
-    Math.max(
-      0,
-      Math.ceil(
-        GAME_TIME - bgm.currentTime
-      )
-    );
+const remain =
+  Math.max(
+    0,
+    Math.ceil(
+      GAME_TIME - bgm.currentTime
+    )
+  );
 
-  timeEl.textContent = remain;
+timeEl.textContent = remain;
 
-  if (bgm.ended) {
-    endGame();
-  }
+if (bgm.currentTime >= GAME_TIME) {
+  endGame();
+}
 }
 
 function draw() {
