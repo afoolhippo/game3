@@ -6,7 +6,6 @@
 
 html,
 body {
-
   margin: 0;
   padding: 0;
 
@@ -31,7 +30,6 @@ body {
 }
 
 .screen {
-
   width: 100vw;
   height: var(--app-height);
 
@@ -43,7 +41,6 @@ body {
 ========================= */
 
 #titleScreen {
-
   display: flex;
   flex-direction: column;
 
@@ -60,7 +57,6 @@ body {
 }
 
 #titleImage {
-
   width: min(420px, 92vw);
 
   image-rendering: pixelated;
@@ -70,7 +66,6 @@ body {
 }
 
 #guideText {
-
   margin-top: 28px;
 
   text-align: center;
@@ -87,7 +82,6 @@ body {
 }
 
 #startButton {
-
   width: auto;
 
   min-width: 230px;
@@ -106,7 +100,6 @@ body {
 ========================= */
 
 #gameScreen {
-
   display: flex;
   flex-direction: column;
 
@@ -124,7 +117,6 @@ body {
 ========================= */
 
 #topBar {
-
   width: min(430px, 100vw);
 
   display: flex;
@@ -137,7 +129,6 @@ body {
 }
 
 #titleBackButton {
-
   width: auto;
 
   min-width: 0;
@@ -162,7 +153,6 @@ body {
 ========================= */
 
 #hud {
-
   width: min(430px, 100vw);
 
   display: flex;
@@ -183,7 +173,6 @@ body {
 }
 
 canvas {
-
   width: auto;
 
   height: min(
@@ -208,7 +197,6 @@ canvas {
 ========================= */
 
 #resultScreen {
-
   overflow-y: auto;
 
   background:
@@ -221,7 +209,6 @@ canvas {
 }
 
 #resultInner {
-
   width: min(420px, 92vw);
 
   margin: 0 auto;
@@ -232,7 +219,6 @@ canvas {
 }
 
 #resultInner h1 {
-
   margin: 0 0 8px;
 
   font-family: "DotGothic16", monospace;
@@ -241,7 +227,6 @@ canvas {
 }
 
 #rankTitle {
-
   margin-bottom: 18px;
 
   font-family: "DotGothic16", monospace;
@@ -252,7 +237,6 @@ canvas {
 }
 
 #resultText {
-
   font-family: "DotGothic16", monospace;
 
   font-size: 16px;
@@ -261,11 +245,51 @@ canvas {
 }
 
 /* =========================
+   RESULT BUTTONS
+========================= */
+
+.resultButtons {
+  width: min(92%, 360px);
+
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 10px;
+
+  margin: 12px auto 0;
+
+  opacity: 1;
+  transform: translateY(0);
+
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease;
+}
+
+.resultButtons.hidden {
+  display: grid !important;
+
+  opacity: 0;
+  transform: translateY(10px);
+
+  pointer-events: none;
+}
+
+.resultButton {
+  width: 100%;
+
+  min-height: 56px;
+
+  padding: 8px 6px;
+
+  font-size: 17px;
+}
+
+/* =========================
    BUTTON
 ========================= */
 
 button {
-
   display: block;
 
   padding: 12px 18px;
@@ -284,20 +308,13 @@ button {
 }
 
 button:active {
-
   transform: translate(4px, 4px);
 
   box-shadow: none;
 }
 
-#resultInner button {
-
-  width: 260px;
-
-  margin-left: auto;
-  margin-right: auto;
-
-  margin-top: 16px;
+button:disabled {
+  opacity: 0.65;
 }
 
 @media (max-height: 760px) {
@@ -324,5 +341,10 @@ button:active {
 
   button {
     font-size: 16px;
+  }
+
+  .resultButton {
+    min-height: 50px;
+    font-size: 15px;
   }
 }

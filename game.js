@@ -1,5 +1,4 @@
 function setAppHeight() {
-
   const height =
     window.visualViewport
       ? window.visualViewport.height
@@ -15,10 +14,34 @@ setAppHeight();
 window.addEventListener("resize", setAppHeight);
 
 if (window.visualViewport) {
-
   window.visualViewport
     .addEventListener("resize", setAppHeight);
 }
+
+/* =========================
+   SUPABASE
+========================= */
+
+const GAME_ID = "game3";
+const GAME_TITLE = "がめ煮ソウル";
+
+const SUPABASE_URL =
+  "https://gmncxnybsovlallxgnkd.supabase.co";
+
+const SUPABASE_ANON_KEY =
+  "sb_publishable_ly3h5OhL8HDSHhYdmJq_Fw_9pG3mhla";
+
+const kabaDb =
+  window.supabase
+    ? window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY
+      )
+    : null;
+
+/* =========================
+   DOM
+========================= */
 
 const canvas =
   document.getElementById("gameCanvas");
@@ -53,6 +76,24 @@ const rankTitle =
 const resultText =
   document.getElementById("resultText");
 
+const resultButtons =
+  document.getElementById("resultButtons");
+
+const shareButton =
+  document.getElementById("shareButton");
+
+const registerButton =
+  document.getElementById("registerButton");
+
+const restartBtn =
+  document.getElementById("restartBtn");
+
+const homeButton =
+  document.getElementById("homeButton");
+
+const titleBackButton =
+  document.getElementById("titleBackButton");
+
 const bgm =
   document.getElementById("bgm");
 
@@ -77,29 +118,11 @@ const seResult =
 const seChorus =
   document.getElementById("seChorus");
 
-const GAME_TIME = 107;
+/* =========================
+   GAME STATE
+========================= */
 
-const load = src => {
-
-  const img = new Image();
-
-  img.src = src;
-
-  return img;
-};
-
-const images = {
-
-  ninjin: load("ninjin.png"),
-  renkon: load("renkon.png"),
-  gobou: load("gobou.png"),
-  toriniku: load("toriniku.png"),
-  ingen: load("ingen.png"),
-  cd: load("cd.png"),
-  vhs: load("vhs.png"),
-  goldshitake: load("goldshitake.png"),
-  nabe: load("nabe.png")
-};
+const GAME_TIME = 53;
 
 let started = false;
 let gameOver = false;
@@ -110,8 +133,9 @@ let chorusPlayed2 = false;
 
 let currentTitle = "味が薄い…🍲";
 
-const player = {
+let scoreRegistered = false;
 
+const player = {
   x: 180,
   y: 660,
 
@@ -124,7 +148,6 @@ const player = {
 const items = [];
 
 const counts = {
-
   ninjin: 0,
   renkon: 0,
   gobou: 0,
@@ -138,7 +161,6 @@ const counts = {
 };
 
 const itemTypes = [
-
   {
     id: "ninjin",
     score: 10,
@@ -196,8 +218,35 @@ const itemTypes = [
   }
 ];
 
-function playSE(se) {
+/* =========================
+   LOAD IMAGE
+========================= */
 
+const load = src => {
+  const img = new Image();
+
+  img.src = src;
+
+  return img;
+};
+
+const images = {
+  ninjin: load("ninjin.png"),
+  renkon: load("renkon.png"),
+  gobou: load("gobou.png"),
+  toriniku: load("toriniku.png"),
+  ingen: load("ingen.png"),
+  cd: load("cd.png"),
+  vhs: load("vhs.png"),
+  goldshitake: load("goldshitake.png"),
+  nabe: load("nabe.png")
+};
+
+/* =========================
+   SOUND
+========================= */
+
+function playSE(se) {
   if (!se) return;
 
   se.currentTime = 0;
@@ -205,8 +254,82 @@ function playSE(se) {
   se.play().catch(() => {});
 }
 
-function weightedRandom() {
+/* =========================
+   RESULT BUTTONS
+========================= */
 
+function showResultButtonsLater() {
+  resultButtons.classList.add("hidden");
+
+  setTimeout(() => {
+    resultButtons.classList.remove("hidden");
+  }, 1500);
+}
+
+function resetRegisterButton() {
+  scoreRegistered = false;
+
+  registerButton.disabled = false;
+  registerButton.textContent = "記録を登録";
+
+  resultButtons.classList.add("hidden");
+}
+
+async function registerScore() {
+  if (scoreRegistered) {
+    alert("この記録は登録済みです");
+    return;
+  }
+
+  if (!kabaDb) {
+    alert("登録機能の読み込みに失敗しました");
+    return;
+  }
+
+  const nickname = prompt(
+    "ニックネームを入力してね",
+    "匿名カバ"
+  );
+
+  if (!nickname) return;
+
+  registerButton.disabled = true;
+  registerButton.textContent = "登録中...";
+
+  const { error } =
+    await kabaDb
+      .from("kaba_scores")
+      .insert({
+        game_id: GAME_ID,
+        game_title: GAME_TITLE,
+        nickname: nickname,
+        rank_title: currentTitle,
+        score: score
+      });
+
+  if (error) {
+    console.error(error);
+
+    registerButton.disabled = false;
+    registerButton.textContent = "記録を登録";
+
+    alert("登録に失敗しました");
+
+    return;
+  }
+
+  scoreRegistered = true;
+
+  registerButton.textContent = "登録済み";
+
+  alert("記録を登録しました！");
+}
+
+/* =========================
+   GAME LOGIC
+========================= */
+
+function weightedRandom() {
   const total =
     itemTypes.reduce(
       (sum, item) => sum + item.weight,
@@ -216,7 +339,6 @@ function weightedRandom() {
   let rand = Math.random() * total;
 
   for (const item of itemTypes) {
-
     rand -= item.weight;
 
     if (rand <= 0) return item;
@@ -226,7 +348,6 @@ function weightedRandom() {
 }
 
 function isChorus() {
-
   const t = bgm.currentTime;
 
   return (
@@ -236,7 +357,6 @@ function isChorus() {
 }
 
 function spawnItem() {
-
   if (!started || gameOver) return;
 
   const amount =
@@ -245,7 +365,6 @@ function spawnItem() {
       : 1;
 
   for (let i = 0; i < amount; i++) {
-
     const type = weightedRandom();
 
     let speed =
@@ -257,7 +376,6 @@ function spawnItem() {
     let h = 52;
 
     if (type.id === "cd") {
-
       speed =
         5.5 + Math.random() * 1.8;
 
@@ -266,7 +384,6 @@ function spawnItem() {
     }
 
     if (type.id === "vhs") {
-
       speed = 2.1;
 
       vx =
@@ -277,7 +394,6 @@ function spawnItem() {
     }
 
     if (type.id === "goldshitake") {
-
       speed = 1.7;
 
       vx =
@@ -288,7 +404,6 @@ function spawnItem() {
     }
 
     items.push({
-
       x:
         Math.random() *
         (canvas.width - w),
@@ -307,7 +422,6 @@ function spawnItem() {
 }
 
 function collision(a, b) {
-
   return (
     a.x < b.x + b.w &&
     a.x + a.w > b.x &&
@@ -317,14 +431,12 @@ function collision(a, b) {
 }
 
 function update() {
-
   if (!started || gameOver) return;
 
   if (
     !chorusPlayed1 &&
     bgm.currentTime >= 37
   ) {
-
     chorusPlayed1 = true;
 
     playSE(seChorus);
@@ -334,7 +446,6 @@ function update() {
     !chorusPlayed2 &&
     bgm.currentTime >= 72
   ) {
-
     chorusPlayed2 = true;
 
     playSE(seChorus);
@@ -345,7 +456,6 @@ function update() {
     i >= 0;
     i--
   ) {
-
     const item = items[i];
 
     item.y += item.speed;
@@ -359,7 +469,6 @@ function update() {
     }
 
     if (collision(player, item)) {
-
       score += item.score;
 
       counts[item.id]++;
@@ -410,7 +519,6 @@ function update() {
 }
 
 function draw() {
-
   ctx.clearRect(
     0,
     0,
@@ -419,11 +527,9 @@ function draw() {
   );
 
   items.forEach(item => {
-
     const img = images[item.id];
 
     if (img) {
-
       ctx.drawImage(
         img,
         item.x,
@@ -444,7 +550,6 @@ function draw() {
 }
 
 function loop() {
-
   update();
   draw();
 
@@ -454,7 +559,6 @@ function loop() {
 }
 
 function makeBar(value) {
-
   const v =
     Math.max(
       0,
@@ -468,7 +572,6 @@ function makeBar(value) {
 }
 
 function endGame() {
-
   gameOver = true;
 
   bgm.pause();
@@ -511,19 +614,19 @@ function endGame() {
       counts.vhs * 1.3
     );
 
-  if (score < 500) {
-    currentTitle = "味が薄い…🍲";
-  }
-  else if (score < 1200) {
-    currentTitle = "実家の味🍲";
-  }
-  else if (score < 2200) {
-    currentTitle = "うまか〜！🍲✨";
-  }
-  else {
-    currentTitle =
-      "がめ煮SOUL MAX🍲🔥✨";
-  }
+if (score < 250) {
+  currentTitle = "味が薄い…🍲";
+}
+else if (score < 650) {
+  currentTitle = "実家の味🍲";
+}
+else if (score < 1200) {
+  currentTitle = "うまか〜！🍲✨";
+}
+else {
+  currentTitle =
+    "がめ煮SOUL MAX🍲🔥✨";
+}
 
   rankTitle.textContent = currentTitle;
 
@@ -535,11 +638,14 @@ function endGame() {
     ソウル　${makeBar(soul)}<br>
     雑味　　${makeBar(noise)}
   `;
+
+  showResultButtonsLater();
 }
 
 function startGame() {
-
   if (started) return;
+
+  resetRegisterButton();
 
   started = true;
 
@@ -557,7 +663,6 @@ function startGame() {
 }
 
 function shareScore() {
-
   const text =
 `${currentTitle}
 
@@ -577,63 +682,51 @@ https://afoolhippo.github.io/game3/
   window.location.href = shareUrl;
 }
 
-titleImage
-  .addEventListener(
-    "pointerdown",
-    startGame
-  );
+/* =========================
+   EVENT
+========================= */
 
-startButton
-  .addEventListener(
-    "pointerdown",
-    startGame
-  );
+titleImage.addEventListener(
+  "pointerdown",
+  startGame
+);
 
-const shareButton =
-  document.getElementById("shareButton");
+startButton.addEventListener(
+  "pointerdown",
+  startGame
+);
 
 shareButton.addEventListener(
   "click",
   shareScore
 );
 
-shareButton.addEventListener(
-  "touchend",
-  e => {
-    e.preventDefault();
-    shareScore();
-  },
-  { passive: false }
+registerButton.addEventListener(
+  "click",
+  registerScore
 );
 
-document
-  .getElementById("restartBtn")
-  .addEventListener(
-    "pointerdown",
-    () => {
-      location.reload();
-    }
-  );
+restartBtn.addEventListener(
+  "pointerdown",
+  () => {
+    location.reload();
+  }
+);
 
-document
-  .getElementById("homeButton")
-  .addEventListener(
-    "pointerdown",
-    () => {
+homeButton.addEventListener(
+  "pointerdown",
+  () => {
+    location.href =
+      "https://afoolhippo.github.io/home/?skipTitle=1";
+  }
+);
 
-      location.href =
-        "https://afoolhippo.github.io/home/?skipTitle=1";
-    }
-  );
-
-document
-  .getElementById("titleBackButton")
-  .addEventListener(
-    "pointerdown",
-    () => {
-      location.reload();
-    }
-  );
+titleBackButton.addEventListener(
+  "pointerdown",
+  () => {
+    location.reload();
+  }
+);
 
 const keys = {};
 
@@ -655,7 +748,6 @@ canvas.addEventListener(
   "touchmove",
 
   e => {
-
     if (!started || gameOver) return;
 
     e.preventDefault();
@@ -681,7 +773,6 @@ canvas.addEventListener(
 );
 
 function limitPlayer() {
-
   player.x =
     Math.max(
       0,
@@ -693,9 +784,7 @@ function limitPlayer() {
 }
 
 function movePlayer() {
-
   if (started && !gameOver) {
-
     if (keys.ArrowLeft) {
       player.x -= player.speed;
     }
